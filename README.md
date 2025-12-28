@@ -1,6 +1,21 @@
 # Morse trainer
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.2.
+This project is created to help users practice and improve their Morse code skills. 
+
+As a professional programmer and ham radio operator, PA5WPM, I took the challenge to create a Morse trainer that can run on any platform supporting a browser.
+Now you can enjoy practicing Morse code on your favorite device, whether it's a desktop computer, laptop, tablet, or smartphone.
+
+Together with Nathan, PD5SAM, a blind ham radio operator, I took the challenge to make the Morse trainer accessible to all users, including those with visual impairments.
+I learned a lot about accessibility and how to make web applications more inclusive. Thanks, Nathan!
+
+During the development process of several months, I faced several challenges in generating sound and speech in Angular and how to synchronize them.
+
+Of course, multiple version upgrades of Angular came along during those months.
+Those version upgrades were absorbed when they became available with very little effort.
+For me, it is the proof that being agile also means you have to be able to absorb changes in the ecosystem, and that this is possible with little effort.
+If you fail on this point, you are agile in name only and should seek a job outside of IT. Being hacked because of known vulnerabilities is a deliberate choice! 
+
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
 
 ## Development server
 
