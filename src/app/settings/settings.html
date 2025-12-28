@@ -1,0 +1,218 @@
+<main class="container full-height-minus-nav d-flex align-items-center justify-content-center">
+  <form (submit)="submit()"
+        [formGroup]="settingsForm"
+        autocomplete="off"
+        class="row gy-3 w-100"
+        style="max-width: 720px;"
+        novalidate>
+    <header class="col-12">
+      <h1 class="h3 mb-1">Settings</h1>
+      <h2 class="h6">
+        Update your training preferences. Validation errors are announced when you leave a field.
+      </h2>
+    </header>
+
+    <div class="col-12">
+      <div class="row align-items-center g-2">
+        <label class="col-sm-4 col-form-label" for="wordSpeed">Word speed</label>
+        <div class="col-sm-8">
+          <input class="form-control"
+                 formControlName="wordSpeed"
+                 id="wordSpeed"
+                 type="number"
+                 appAutofocus
+                 inputmode="numeric"
+                 min="5"
+                 max="30"
+                 [attr.aria-describedby]="'wordSpeed-error'"
+                 [attr.aria-invalid]="settingsForm.get('wordSpeed')?.invalid ? 'true' : null">
+          <control-error id="wordSpeed-error" controlName="wordSpeed"></control-error>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="row align-items-center g-2">
+        <label class="col-sm-4 col-form-label" for="groupSize">Group size</label>
+        <div class="col-sm-8">
+          <input class="form-control"
+                 formControlName="groupSize"
+                 id="groupSize"
+                 type="number"
+                 inputmode="numeric"
+                 min="3"
+                 max="10"
+                 [attr.aria-describedby]="'groupSize-error'"
+                 [attr.aria-invalid]="settingsForm.get('groupSize')?.invalid ? 'true' : null">
+        </div>
+      </div>
+      <control-error id="groupSize-error" controlName="groupSize"></control-error>
+    </div>
+
+    <div class="col-12">
+      <div class="row align-items-center g-2">
+        <label class="col-sm-4 col-form-label" for="pause">Pause before in seconds</label>
+        <div class="col-sm-8">
+          <input class="form-control"
+                 formControlName="pause"
+                 id="pause"
+                 type="number"
+                 inputmode="numeric"
+                 min="0"
+                 max="10"
+                 [attr.aria-describedby]="'pause-error'"
+                 [attr.aria-invalid]="settingsForm.get('pause')?.invalid ? 'true' : null">
+        </div>
+      </div>
+      <control-error id="pause-error" controlName="pause"></control-error>
+    </div>
+
+    <div class="col-12">
+      <div class="row align-items-center g-2">
+        <label class="col-sm-4 col-form-label" for="duration">Lesson duration in seconds</label>
+        <div class="col-sm-8">
+          <input class="form-control"
+                 formControlName="duration"
+                 id="duration"
+                 type="number"
+                 inputmode="numeric"
+                 min="5"
+                 max="600"
+                 [attr.aria-describedby]="'duration-error'"
+                 [attr.aria-invalid]="settingsForm.get('duration')?.invalid ? 'true' : null">
+        </div>
+      </div>
+      <control-error id="duration-error" controlName="duration"></control-error>
+    </div>
+
+    <div class="col-12">
+      <div class="row align-items-center g-2">
+        <label class="col-sm-4 col-form-label" for="tone">Tone</label>
+        <div class="col-sm-8">
+          <select class="form-select"
+                  formControlName="tone"
+                  id="tone">
+            <option value="300">300</option>
+            <option value="440">440</option>
+            <option value="600">600</option>
+            <option value="800">800</option>
+            <option value="880">880</option>
+            <option value="1000">1000</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="row align-items-center g-2">
+        <label class="col-sm-4 col-form-label" for="toneVolume">Tone volume</label>
+        <div class="col-sm-8">
+          <input class="form-range"
+                 formControlName="toneVolume"
+                 id="toneVolume"
+                 max="1"
+                 min="0"
+                 step="0.05"
+                 type="range"
+                 [attr.aria-describedby]="'toneVolume-error'"
+                 [attr.aria-invalid]="settingsForm.get('toneVolume')?.invalid ? 'true' : null">
+        </div>
+      </div>
+      <control-error id="toneVolume-error" controlName="toneVolume"></control-error>
+    </div>
+
+    <div class="col-12">
+      <div class="row align-items-center g-2">
+        <div class="col-sm-4">
+          <label class="form-check-label" for="revealBefore">Reveal before sending</label>
+        </div>
+        <div class="col-sm-8">
+          <input class="form-check-input"
+                 formControlName="revealBefore"
+                 id="revealBefore"
+                 type="checkbox"
+                 [attr.aria-describedby]="'revealBefore-error'"
+                 [attr.aria-invalid]="settingsForm.get('revealBefore')?.invalid ? 'true' : null">
+        </div>
+      </div>
+      <control-error id="revealBefore-error" controlName="revealBefore"></control-error>
+    </div>
+
+    <div class="col-12">
+      <div class="row align-items-center g-2">
+        <label class="col-sm-4 col-form-label" for="voice">Voice</label>
+        <div class="col-sm-8">
+          <select class="form-select"
+                  formControlName="voice"
+                  id="voice"
+                  [attr.aria-describedby]="'voice-error'"
+                  [attr.aria-invalid]="settingsForm.get('voice')?.invalid ? 'true' : null">
+            @for (voice of voices; track voice) {
+              <option value="{{voice.name}}">{{ voice.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <control-error id="voice-error" controlName="voice"></control-error>
+    </div>
+
+    <div class="col-12">
+      <div class="row align-items-center g-2">
+        <label class="col-sm-4 col-form-label" for="voiceVolume">Voice volume</label>
+        <div class="col-sm-8">
+          <input class="form-range"
+                 formControlName="voiceVolume"
+                 id="voiceVolume"
+                 max="1"
+                 min="0"
+                 step="0.05"
+                 type="range"
+                 [attr.aria-describedby]="'voiceVolume-error'"
+                 [attr.aria-invalid]="settingsForm.get('voiceVolume')?.invalid ? 'true' : null">
+        </div>
+      </div>
+      <control-error id="voiceVolume-error" controlName="voiceVolume"></control-error>
+    </div>
+
+    <div class="col-12">
+      <div class="row align-items-center g-2">
+        <label class="col-sm-4 col-form-label" for="voiceRate">Voice rate</label>
+        <div class="col-sm-8">
+          <input class="form-range"
+                 formControlName="voiceRate"
+                 id="voiceRate"
+                 max="1.5"
+                 min="0.5"
+                 step="0.05"
+                 type="range"
+                 [attr.aria-describedby]="'voiceRate-error'"
+                 [attr.aria-invalid]="settingsForm.get('voiceRate')?.invalid ? 'true' : null">
+        </div>
+      </div>
+      <control-error id="voiceRate-error" controlName="voiceRate"></control-error>
+    </div>
+
+    <div class="col-12">
+      <div class="row align-items-center g-2">
+        <div class="col-sm-4">
+          <label class="form-check-label" for="darkMode">Dark mode</label>
+        </div>
+        <div class="col-sm-8">
+          <input class="form-check-input"
+                 formControlName="darkMode"
+                 id="darkMode"
+                 type="checkbox"
+                 [attr.aria-describedby]="'darkMode-error'"
+                 [attr.aria-invalid]="settingsForm.get('darkMode')?.invalid ? 'true' : null">
+        </div>
+      </div>
+      <control-error id="darkMode-error" controlName="darkMode"></control-error>
+    </div>
+
+    <div class="col-12 d-flex gap-2 mt-2 justify-content-start">
+      <button [disabled]="settingsForm.invalid" class="btn btn-primary" type="submit">Save</button>
+      <button (click)="onReset()" class="btn btn-secondary" type="button">Reset</button>
+      <button (click)="onBack()" class="btn btn-success" type="button">Back</button>
+    </div>
+  </form>
+</main>

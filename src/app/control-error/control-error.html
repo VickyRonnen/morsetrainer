@@ -1,0 +1,10 @@
+@if (message$|async) {
+  <div
+    class="col text-danger bi-exclamation-triangle-fill"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    {{ message$ | async }}
+  </div>
+}

@@ -1,0 +1,6 @@
+@if (startupError) {
+  <h1>{{ startupError }}</h1>
+} @else {
+  <app-nav></app-nav>
+  <router-outlet></router-outlet>
+}

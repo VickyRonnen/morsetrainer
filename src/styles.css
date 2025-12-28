@@ -1,0 +1,8 @@
+:root {
+  --nav-height: 56px; /*You HAVE To Give A Default Fallback Value*/
+}
+
+.full-height-minus-nav {
+  min-height: calc(100vh - var(--nav-height));
+}
+

@@ -1,0 +1,87 @@
+<main class="container full-height-minus-nav" >
+  <h1 class="h5">Punctuation lesson</h1>
+  <div class="d-flex flex-column flex-sm-row flex-sm-wrap gap-2 align-items-stretch align-items-sm-center">
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)=start(LessonMode.NewOnly)
+      [disabled]="lessonService.state()!=='stop'"
+      [attr.aria-disabled]="lessonService.state()!=='stop'"
+    >
+      Only {{ newPunctuations[0] }} and {{ newPunctuations[1] }}
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)=start(LessonMode.NewAndOldFiftyFifty)
+      [disabled]="lessonService.state()!=='stop'"
+      [attr.aria-disabled]="lessonService.state()!=='stop'"
+    >
+      {{ newPunctuations[0] }} and {{ newPunctuations[1] }} 50% & old 50%
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)=start(LessonMode.NewAndOld)
+      [disabled]="lessonService.state()!=='stop'"
+      [attr.aria-disabled]="lessonService.state()!=='stop'"
+    >
+      New and old punctuations
+    </button>
+
+    <button
+      id="stop"
+      type="button"
+      class="btn btn-danger"
+      (click)=stop();
+      [disabled]="lessonService.state()==='stop'"
+      [attr.aria-disabled]="lessonService.state()==='stop'"
+    >
+      Stop
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-success"
+      (click)=readOut()
+      [disabled]=!lessonService.canReadOut()
+      [attr.aria-disabled]=!lessonService.canReadOut()
+    >
+      Read out
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-info"
+      (click)=gotoLesson(lesson-1)
+      [disabled]=!canPrev()
+      [attr.aria-disabled]=!canPrev()
+    >
+      Lesson {{ lesson - 1 }}
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-info"
+      (click)=gotoLesson(lesson+1)
+      [disabled]=!canNext()
+      [attr.aria-disabled]=!canNext()
+    >
+      Lesson {{ lesson + 1 }}
+    </button>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12">
+      <h2 class="h5">Send text</h2>
+      <div
+        class="font-monospace w-100"
+        aria-hidden="true"
+      >
+        {{ lessonService.text1() }} <span class="bg-danger"> {{ lessonService.text2() }}</span> {{ lessonService.text3() }}
+      </div>
+    </div>
+  </div>
+</main>

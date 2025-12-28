@@ -1,0 +1,163 @@
+<main class="container full-height-minus-nav">
+  <h1>Overview of the lessons</h1>
+
+  <p>
+    Morse code uses dots and dashes.
+    When you want to speak out morse code, use dit for the dot and dah for the dash.
+    The dash is three times longer than the dot, so you can hear the difference.
+  </p>
+  <p>
+    This page contains two expandable sections. Each section includes a table listing lesson numbers, the new
+    characters, and their Morse code.
+  </p>
+
+  <div class="accordion" id="lessons-accordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="letters-heading">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#letters-panel"
+          aria-expanded="true"
+          aria-controls="letters-panel">
+          Letter lessons
+        </button>
+      </h2>
+
+      <div
+        id="letters-panel"
+        class="accordion-collapse collapse show"
+        aria-labelledby="letters-heading"
+        data-bs-parent="#lessons-accordion">
+        <div class="accordion-body">
+          @if (isLargeScreen$ | async) {
+            <table class="table table-striped" id="letter-lessons-table2">
+              <caption class="visually-hidden">
+                Letter lessons table. Each row shows the lesson number, two letters, and their Morse code.
+              </caption>
+              <thead>
+              <tr>
+                <th scope="col">Lesson</th>
+                <th scope="col">Letter 1</th>
+                <th scope="col">Letter 1 in Morse</th>
+                <th scope="col">Letter 2</th>
+                <th scope="col">Letter 2 in Morse</th>
+              </tr>
+              </thead>
+
+              <tbody>
+                @for (r of chunkedItems(letterItems); track $index) {
+                  <tr>
+                    <th scope="row">{{ r[0].lesson }}</th>
+                    <td aria-label="{{r[0].label}}">{{ r[0].char }}</td>
+                    <td class="font-monospace" aria-label="{{r[0].morseAriaLabel}}">{{ r[0].morse }}</td>
+                    <td aria-label="{{r[1].label}}">{{ r[1].char }}</td>
+                    <td class="font-monospace" aria-label="{{r[1].morseAriaLabel}}">{{ r[1].morse }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          } @else {
+            <table class="table table-striped" id="letter-lessons-table1">
+              <caption class="visually-hidden">
+                Letter lessons table. Each row shows the lesson number, the letter, and the Morse code.
+              </caption>
+              <thead>
+              <tr>
+                <th scope="col">Lesson</th>
+                <th scope="col">Letter</th>
+                <th scope="col">Letter in Morse</th>
+              </tr>
+              </thead>
+
+              <tbody>
+                @for (r of letterItems; track $index) {
+                  <tr>
+                    <th scope="row">{{ r.lesson }}</th>
+                    <td aria-label="{{r.label}}">{{ r.char }}</td>
+                    <td class="font-monospace" aria-label="{{r.morseAriaLabel}}">{{ r.morse }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="punctuation-heading">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#punctuation-panel"
+          aria-expanded="false"
+          aria-controls="punctuation-panel">
+          Punctuation lessons
+        </button>
+      </h2>
+
+      <div
+        id="punctuation-panel"
+        class="accordion-collapse collapse"
+        aria-labelledby="punctuation-heading"
+        data-bs-parent="#lessons-accordion">
+        <div class="accordion-body">
+          @if (isLargeScreen$ | async) {
+            <table class="table table-striped" id="punctuation-lessons-table2">
+              <caption class="visually-hidden">
+                Punctuation lessons table. Each row shows the lesson number, two punctuation characters, and their Morse
+                code.
+              </caption>
+              <thead>
+              <tr>
+                <th scope="col">Lesson</th>
+                <th scope="col">Punctuation 1</th>
+                <th scope="col">Punctuation 1 in Morse</th>
+                <th scope="col">Punctuation 2</th>
+                <th scope="col">Punctuation 2 in Morse</th>
+              </tr>
+              </thead>
+              <tbody>
+                @for (r of chunkedItems(punctuationItems); track $index) {
+                  <tr>
+                    <th scope="row">{{ r[0].lesson }}</th>
+                    <td aria-label="{{r[0].label}}">{{ r[0].char }}</td>
+                    <td class="font-monospace" aria-label="{{r[0].morseAriaLabel}}">{{ r[0].morse }}</td>
+                    <td aria-label="{{r[1].label}}">{{ r[1].char }}</td>
+                    <td class="font-monospace" aria-label="{{r[1].morseAriaLabel}}">{{ r[1].morse }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          } @else {
+            <table class="table table-striped" id="punctuation-lessons-table1">
+              <caption class="visually-hidden">
+                Punctuation lessons table. Each row shows the lesson number, the punctuation character, and the Morse
+                code.
+              </caption>
+              <thead>
+              <tr>
+                <th scope="col">Lesson</th>
+                <th scope="col">Punctuation</th>
+                <th scope="col">Punctuation in Morse</th>
+              </tr>
+              </thead>
+              <tbody>
+                @for (r of punctuationItems; track $index) {
+                  <tr>
+                    <th scope="row">{{ r.lesson }}</th>
+                    <td aria-label="{{r.label}}">{{ r.char }}</td>
+                    <td class="font-monospace" aria-label="{{r.morseAriaLabel}}">{{ r.morse }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

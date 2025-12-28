@@ -1,0 +1,22 @@
+.lesson-button {
+  border: 2px solid var(--bs-border-color);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+  cursor: pointer;
+}
+
+.lesson-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  border-color: var(--bs-primary-border-subtle);
+}
+
+.lesson-button:focus {
+  outline: none;
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25) !important;
+  z-index: 1;
+}
+
+/* Theme-aware active state */
+
+/* Ensure text remains visible in dark mode within the card */
