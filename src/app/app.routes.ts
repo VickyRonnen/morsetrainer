@@ -9,7 +9,6 @@ import {LetterLesson} from './letter-lesson/letter-lesson';
 import {PunctuationLessons} from './punctuation-lessons/punctuation-lessons';
 import {LetterLessons} from './letter-lessons/letter-lessons';
 import {PunctuationLesson} from './punctuation-lesson/punctuation-lesson';
-import {MyDebug} from './my-debug/my-debug';
 
 export const routes: Routes = [
   {path: 'home', component: Home, title: 'Home'},
@@ -21,7 +20,6 @@ export const routes: Routes = [
   {path: 'settings', component: Settings, title: 'Settings'},
   {path: 'overview', component: Overview, title: 'Overview'},
   {path: 'about', component: About, title: 'About'},
-  {path: 'd', component: MyDebug, title: 'Debug'},
   {path: '', component: Home, pathMatch: 'full'},
   {path: '**', component: PageNotFound}
 ];

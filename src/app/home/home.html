@@ -1,22 +1,30 @@
-<main class="container full-height-minus-nav">
-  <h1>Welcome to the morsetrainer by PA5WPM</h1>
+@if (startupError) {
+  <h1>{{ startupError }}</h1>
+} @else {
+  <main class="container full-height-minus-nav">
+    <h1>Welcome to the morsetrainer by PA5WPM</h1>
 
-  <p>
-    Using the Koch method for the sequence of letters, numbers and punctuation and the Farnsworth method for word and character
-    speed, this site will teach you morse code.
-  </p>
+    <p>
+      Using the Koch method for the sequence of letters, numbers and punctuation and the Farnsworth method for word and character
+      speed, this site will teach you morse code.
+    </p>
 
-  <h2 class="h5">Next steps</h2>
-  <ul>
-    <li><a routerLink="/settings">Go to the settings page</a> and adjust settings to your preferences.</li>
-    <li><a routerLink="/letters">Go to the letters page</a> and start learning morse code.</li>
-    <li><a routerLink="/punctuations">Go to the punctuation page</a> and start learning punctuation in morse code.</li>
-    <li><a routerLink="/words">Go to the words page</a> and start learning words in morse code.</li>
-    <li><a routerLink="/overview">Go to the overview page</a> for the representation of letters in morse code.</li>
-    <li><a routerLink="/about">Go to the about page</a> and read info about this morsetrainer.</li>  </ul>
+    <h2 class="h5">Next steps</h2>
+    <ul>
+      <li><a routerLink="/settings">Go to the settings page</a> and adjust settings to your preferences.</li>
+      <li><a routerLink="/letters">Go to the letters page</a> and start learning morse code.</li>
+      <li><a routerLink="/punctuations">Go to the punctuation page</a> and start learning punctuation in morse code.</li>
+      <li><a routerLink="/words">Go to the words page</a> and start learning words in morse code.</li>
+      <li><a routerLink="/overview">Go to the overview page</a> for the representation of letters in morse code.</li>
+      <li><a routerLink="/about">Go to the about page</a> and read info about this morsetrainer.</li>
+    </ul>
 
-  <h2 class="h5">Status</h2>
-  <p>
-    Currently working on accessibility related things together with Nathan, PD5SAM.
-  </p>
-</main>
+    <h2 class="h5">Status</h2>
+    <p>
+      Currently working on accessibility related things together with Nathan, PD5SAM.
+    </p>
+
+    <h3 class="h6">Debugging</h3>
+    <p>Detected {{ nvoices }} voices</p>
+  </main>
+}
