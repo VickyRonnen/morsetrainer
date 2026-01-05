@@ -20,8 +20,8 @@ export class App implements OnInit {
     this.checkSpeechSynthesisSupport().then(supported => {
       if (!supported) {
         this.startupError = 'Speech synthesis is not supported by your browser, use another browser';
-        this.cdr.detectChanges();
       }
+        this.cdr.detectChanges();
     });
 
     if (!this.isLocalStorageSupported()) {
@@ -50,7 +50,10 @@ export class App implements OnInit {
 
     // Some browsers load voices asynchronously
     return new Promise<boolean>((resolve) => {
-      const timeout = setTimeout(() => resolve(false), 1000);
+      const timeout = setTimeout(() => {
+        console.warn('No voices found, waiting for speechSynthesis.onvoiceschanged');
+        resolve(false);
+      }, 5000);
 
       globalThis.speechSynthesis.onvoiceschanged = () => {
         const voices = globalThis.speechSynthesis.getVoices();
