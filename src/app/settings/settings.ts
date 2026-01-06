@@ -42,7 +42,7 @@ export class Settings implements OnInit {
       'wordSpeed': new FormControl(this.wordSpeed, {
         nonNullable: true,
         updateOn: 'blur',
-        validators: [Validators.required, Validators.min(5), Validators.max(30)]
+        validators: [Validators.required, Validators.min(1), Validators.max(30)]
       }),
       'groupSize': new FormControl(this.groupSize, {
         nonNullable: true,
