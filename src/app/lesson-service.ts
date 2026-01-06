@@ -28,7 +28,7 @@ export class LessonService {
     this.duration = Number.parseInt(localStorage.getItem('duration') || '30', 10);
     this.groupSize = Number.parseInt(localStorage.getItem('groupSize') || '5', 10);
     this.pause = Number.parseInt(localStorage.getItem('pause') || '3', 10);
-    this.revealBefore = Boolean(localStorage.getItem('revealBefore') || 'true');
+    this.revealBefore = (localStorage.getItem('revealBefore') || 'false') === 'true';
     this.voice = localStorage.getItem('voice');
     this.voiceVolume = Number.parseFloat(localStorage.getItem('voiceVolume') || '0.5');
     this.voiceRate = Number.parseFloat(localStorage.getItem('voiceRate') || '1');
@@ -210,17 +210,18 @@ export class LessonService {
       if (this.state() === 'stop') {
         break;
       }
-      if (this.revealBefore) {
-        this.text1.set(this.text1() + letter);
-      }
       try {
-        await this.morseService.send(letter);
-        this.sendText += letter;
+        if (this.revealBefore) {
+          this.text1.set(this.text1() + letter);
+        }
+        await this.morseService.send(letter).then(letter => {
+          this.sendText += letter;
+          if (!this.revealBefore) {
+            this.text1.set(this.text1() + letter);
+          }
+        });
       } catch (error) {
         console.error(`Failed to send letter ${letter}:`, error);
-      }
-      if (!this.revealBefore) {
-        this.text1.set(this.text1() + letter);
       }
     }
     this.text1.set(this.text1() + ' ');
