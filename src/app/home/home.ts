@@ -51,20 +51,21 @@ export class Home implements OnInit{
     // Some browsers load voices asynchronously
     return new Promise<boolean>((resolve) => {
       const timeout = setTimeout(() => {
-        console.warn('No voices found, waiting for speechSynthesis.onvoiceschanged');
+        console.warn(`[${new Date().toISOString()}] No voices found, waiting for speechSynthesis.onvoiceschanged`);
         this.nvoices = voices.length;
         resolve(false);
       }, 2000);
 
       globalThis.speechSynthesis.onvoiceschanged = () => {
-        console.log('onvoiceschanged fired')
+        console.log(`[${new Date().toISOString()}] onvoiceschanged fired`)
         const voices = globalThis.speechSynthesis.getVoices();
         if (voices.length > 0) {
           this.nvoices = voices.length;
-          console.log('voices found, resolving');
+          console.log(`[${new Date().toISOString()}] ${this.nvoices} voices found, resolving`);
           clearTimeout(timeout);
           resolve(true);
         }
+        console.warn(`[${new Date().toISOString()}] No voices found, waiting for speechSynthesis.onvoiceschanged`);
         // Don't resolve false here - wait for timeout or more voices
       };
     });
