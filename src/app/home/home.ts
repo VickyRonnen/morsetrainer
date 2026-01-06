@@ -16,7 +16,6 @@ export class Home implements OnInit{
   protected nvoices: number = 0;
 
   ngOnInit(): void {
-    globalThis.document.body.dataset['bsTheme'] = (localStorage.getItem('darkMode') || 'true') === 'true' ? 'dark' : 'light';
     this.checkSpeechSynthesisSupport().then(supported => {
       if (!supported) {
         this.startupError = 'Speech synthesis is not working in your browser. Try to reload the page or use another browser.';
