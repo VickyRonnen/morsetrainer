@@ -7,13 +7,16 @@ import {Alphabet} from './alphabet';
 export class MorseService {
   private readonly ctx: AudioContext = new AudioContext();
 
-
   private wordSpeed!: number;
   private Tramp!: number;
   private tone!: number;
   private toneVolume!: number;
   private Tl: number = 0;
   private Ts: number = 0;
+
+  // Track currently playing nodes so we can stop them immediately
+  private readonly activeOscillators = new Set<OscillatorNode>();
+  private readonly activeGains = new Set<GainNode>();
 
   constructor() {
     this.readSettings();
@@ -35,8 +38,8 @@ export class MorseService {
     let duration = 0;
     for (const t of Alphabet.alphabet[c].morse + '$') {
       if (t === ' ') {
-        duration -= 3*this.Ts;
-        duration += 7*this.Ts;
+        duration -= 3 * this.Ts;
+        duration += 7 * this.Ts;
         break;
       }
       switch (t) {
@@ -50,16 +53,53 @@ export class MorseService {
           break;
         case '$':
           duration -= this.Tl;
-          duration += 3*this.Ts;
+          duration += 3 * this.Ts;
           break;
       }
     }
     return duration;
   }
 
-  async send(character: string) {
+  /** Immediately stops any in-flight tone(s). Safe to call even if nothing is playing. */
+  stopAll() {
+    const now = this.ctx.currentTime;
+
+    for (const gain of this.activeGains) {
+      try {
+        gain.gain.cancelScheduledValues(now);
+        gain.gain.setValueAtTime(0, now);
+      } catch {
+        // ignore
+      }
+    }
+
+    for (const osc of this.activeOscillators) {
+      try {
+        osc.stop(now);
+      } catch {
+        // ignore (already stopped)
+      }
+    }
+  }
+
+  async send(character: string, signal?: AbortSignal) {
+    if (signal?.aborted) {
+      throw new DOMException('Aborted', 'AbortError');
+    }
+
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
+
+    this.activeOscillators.add(osc);
+    this.activeGains.add(gain);
+
+    const cleanup = () => {
+      this.activeOscillators.delete(osc);
+      this.activeGains.delete(gain);
+      try { osc.disconnect(); } catch { /* ignore */ }
+      try { gain.disconnect(); } catch { /* ignore */ }
+    };
+
     osc.type = 'sine';
     osc.frequency.value = this.tone;
     osc.connect(gain);
@@ -69,8 +109,8 @@ export class MorseService {
     let wallClock = this.ctx.currentTime;
     for (const t of Alphabet.alphabet[character].morse + '$') {
       if (t === ' ') {
-        wallClock -= 3*this.Ts;
-        wallClock += 7*this.Ts;
+        wallClock -= 3 * this.Ts;
+        wallClock += 7 * this.Ts;
         gain.gain.setTargetAtTime(0, wallClock, this.Tramp);
         break;
       }
@@ -89,22 +129,45 @@ export class MorseService {
           break;
         case '$':
           wallClock -= this.Tl;
-          wallClock += 3*this.Ts;
+          wallClock += 3 * this.Ts;
           gain.gain.setTargetAtTime(0, wallClock, this.Tramp);
           break;
       }
     }
 
     return new Promise<string>((resolve, reject) => {
-      const onEnded = async () => {
+      const onAbort = () => {
         try {
-          osc.disconnect();
-          gain.disconnect();
-          resolve(character);
-        } catch (e) {
-          reject(e);
+          // hard stop immediately
+          const now = this.ctx.currentTime;
+          try {
+            gain.gain.cancelScheduledValues(now);
+            gain.gain.setValueAtTime(0, now);
+          } catch {
+            // ignore
+          }
+          try { osc.stop(now); } catch { /* ignore */ }
+        } finally {
+          cleanup();
+          reject(new DOMException('Aborted', 'AbortError'));
         }
       };
+
+      const onEnded = () => {
+        try {
+          cleanup();
+          resolve(character);
+        } catch (e) {
+          cleanup();
+          reject(e);
+        } finally {
+          signal?.removeEventListener('abort', onAbort);
+        }
+      };
+
+      if (signal) {
+        signal.addEventListener('abort', onAbort, {once: true});
+      }
 
       osc.addEventListener('ended', onEnded, {once: true});
 
@@ -112,9 +175,8 @@ export class MorseService {
         osc.start();
         osc.stop(wallClock);
       } catch (e) {
-        osc.removeEventListener('ended', onEnded);
-        osc.disconnect();
-        gain.disconnect();
+        signal?.removeEventListener('abort', onAbort);
+        cleanup();
         reject(e);
       }
     });

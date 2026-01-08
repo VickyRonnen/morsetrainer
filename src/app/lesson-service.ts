@@ -24,6 +24,10 @@ export class LessonService {
   sendText: string = '';
   private voiceRate: number = 0;
 
+  // Prevent overlapping runs + allow cancellation of in-flight send()
+  private runId = 0;
+  private runAbort?: AbortController;
+
   readSettings() {
     this.duration = Number.parseInt(localStorage.getItem('duration') || '30', 10);
     this.groupSize = Number.parseInt(localStorage.getItem('groupSize') || '5', 10);
@@ -53,21 +57,32 @@ export class LessonService {
 
   async start(lessonMode: LessonMode, newLetters: string[], oldLetters: string[]) {
     this.readSettings();
+
+    // cancel any previous run immediately
+    this.stop();
+
+    const myRunId = ++this.runId;
+    this.runAbort = new AbortController();
+
     this.state.set('sending');
     this.text1.set('');
     this.text2.set('');
     this.text3.set('');
     this.sendText = '';
+
     await new Promise(resolve => setTimeout(resolve, this.pause * 1000));
+    if (this.state() === 'stop' || myRunId !== this.runId) {
+      return;
+    }
 
     const lessonContent: string[] = this.generate(lessonMode, newLetters, oldLetters);
     for (const group of lessonContent) {
-      if (this.state() === 'stop') {
+      if (this.state() === 'stop' || myRunId !== this.runId) {
         break;
       }
-      await this.sendGroup(group);
+      await this.sendGroup(group, myRunId);
     }
-    if (this.state() === 'sending') {
+    if (this.state() === 'sending' && myRunId === this.runId) {
       this.readOut();
     }
   }
@@ -124,6 +139,9 @@ export class LessonService {
   }
 
   stop() {
+    // invalidate any in-flight async work
+    this.runId++;
+
     this.state.set('stop');
     globalThis.speechSynthesis.cancel();
 
@@ -131,23 +149,28 @@ export class LessonService {
       this.utterance.onend = null;
     }
 
+    // abort in-flight morse send() and stop any currently playing oscillator immediately
+    try { this.runAbort?.abort(); } catch { /* ignore */ }
+    this.runAbort = undefined;
+    this.morseService.stopAll();
+
     this.index = 0;
   }
 
-  generate(lessonMode: LessonMode, newLetters: string [], oldLetters: string []): string [] {
+  generate(lessonMode: LessonMode, newLetters: string[], oldLetters: string[]): string[] {
     const groups: string[] = [];
     let currentDuration = 0;
     let letters = [];
 
     switch (lessonMode) {
-      case LessonMode.NewOnly :
+      case LessonMode.NewOnly:
         letters = newLetters;
         break;
-      case LessonMode.NewAndOldFiftyFifty :
+      case LessonMode.NewAndOldFiftyFifty:
         do letters.push(...newLetters); while (letters.length < oldLetters.length);
         letters.push(...oldLetters);
         break;
-      case LessonMode.NewAndOld :
+      case LessonMode.NewAndOld:
         letters = newLetters.concat(oldLetters);
         break;
       default:
@@ -156,12 +179,12 @@ export class LessonService {
 
     let counter = 0;
     let n = 0;
-    groups [n] = '';
+    groups[n] = '';
     while (currentDuration < this.duration && letters.length > 0) {
       if (counter > 0 && counter % this.groupSize === 0) {
         currentDuration += this.morseService.computeDuration(' ');
         n++;
-        groups [n] = '';
+        groups[n] = '';
       }
       let c = letters[this.randomInteger(0, letters.length)];
       currentDuration += this.morseService.computeDuration(c);
@@ -185,42 +208,61 @@ export class LessonService {
 
   async startWords(words: string[]) {
     this.readSettings();
+
+    // cancel any previous run immediately
+    this.stop();
+
+    const myRunId = ++this.runId;
+    this.runAbort = new AbortController();
+
     this.state.set('sending');
     this.text1.set('');
     this.text2.set('');
     this.text3.set('');
     this.sendText = '';
+
     await new Promise(resolve => setTimeout(resolve, this.pause * 1000));
+    if (this.state() === 'stop' || myRunId !== this.runId) {
+      return;
+    }
 
     const lessonContent: string[] = this.generateWords(words);
     for (const word of lessonContent) {
-      if (this.state() === 'stop') {
+      if (this.state() === 'stop' || myRunId !== this.runId) {
         break;
       }
-      await this.sendGroup(word);
+      await this.sendGroup(word, myRunId);
     }
-    if (this.state() === 'sending') {
+    if (this.state() === 'sending' && myRunId === this.runId) {
       this.readOut();
     }
-
   }
 
-  async sendGroup(word: string) {
-    for (const letter of word+' ') {
-      if (this.state() === 'stop') {
+  async sendGroup(word: string, myRunId: number) {
+    for (const letter of word + ' ') {
+      if (this.state() === 'stop' || myRunId !== this.runId) {
         break;
       }
       try {
         if (this.revealBefore) {
           this.text1.set(this.text1() + letter);
         }
-        await this.morseService.send(letter).then(letter => {
-          this.sendText += letter;
-          if (!this.revealBefore) {
-            this.text1.set(this.text1() + letter);
-          }
-        });
+
+        const sent = await this.morseService.send(letter, this.runAbort?.signal);
+
+        if (this.state() === 'stop' || myRunId !== this.runId) {
+          break;
+        }
+
+        this.sendText += sent;
+        if (!this.revealBefore) {
+          this.text1.set(this.text1() + sent);
+        }
       } catch (error) {
+        // Abort is expected when stopping; don't spam console
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          break;
+        }
         console.error(`Failed to send letter ${letter}:`, error);
       }
     }
