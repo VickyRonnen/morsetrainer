@@ -31,6 +31,7 @@ export class Settings implements OnInit {
   protected settingsForm!: FormGroup;
   private readonly morseService = inject(MorseService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly tts: SpeechSynthesisUtterance = new SpeechSynthesisUtterance();
 
 
   constructor(private readonly fb: FormBuilder) {
@@ -119,17 +120,17 @@ export class Settings implements OnInit {
     });
     this.settingsForm.get('voiceVolume')?.valueChanges.pipe(
       distinctUntilChanged(),  // Only emit if the value actually changes
-      debounceTime(200)        // Wait 200ms after the last change (optional, prevents spam during fast changes)
+      debounceTime(100)        // Wait 200ms after the last change (optional, prevents spam during fast changes)
     ).subscribe((value: string) => {
       this.voiceVolume = Number.parseFloat(value);
       this.testVolume(this.voice, this.voiceVolume);
     });
     this.settingsForm.get('voiceRate')?.valueChanges.pipe(
       distinctUntilChanged(),  // Only emit if the value actually changes
-      debounceTime(200)        // Wait 200ms after the last change (optional, prevents spam during fast changes)
+      debounceTime(100)        // Wait 200ms after the last change (optional, prevents spam during fast changes)
     ).subscribe((value: string) => {
       this.voiceRate = Number.parseFloat(value);
-      this.testVoice(this.voice, this.voiceVolume, this.voiceRate);
+      this.testVoiceRate(this.voice, this.voiceVolume, this.voiceRate);
     });
 
     this.settingsForm.get('darkMode')?.valueChanges.pipe(
@@ -189,30 +190,44 @@ export class Settings implements OnInit {
   }
 
   private testVoice(voice: string, volume: number, rate: number) {
-    const tts = new SpeechSynthesisUtterance();
-    tts.lang = 'en';
-    tts.voice = this.voices.find((value) => {
-      tts.text = value.name + ' is selected. Voice rate ' + rate;
+    speechSynthesis.cancel();
+    this.tts.text = '';
+    this.tts.lang = 'en';
+    this.tts.voice = this.voices.find((value) => {
+      this.tts.text = value.name + ' is selected.';
       return value.name == voice;
     }) || null;
     this.voiceVolume = volume;
-    tts.volume = volume;
-    tts.rate = rate;
-    speechSynthesis.speak(tts);
+    this.tts.volume = volume;
+    this.tts.rate = rate;
+    speechSynthesis.speak(this.tts);
   }
 
   private testVolume(voice: string, volume: number) {
-    const tts = new SpeechSynthesisUtterance();
-    tts.lang = 'en';
-    tts.voice = this.voices.find((value) => {
-      tts.text = value.name + ' is selected';
+    speechSynthesis.cancel();
+    this.tts.lang = 'en';
+    this.tts.voice = this.voices.find((value) => {
+      this.tts.text = value.name + ' is selected';
       return value.name == voice;
     }) || null;
-    tts.text = 'Voice volume';
-    tts.rate = 1.1;
+    this.tts.text = 'Voice volume '+volume;
+    this.tts.rate = 1;
     this.voiceVolume = volume;
-    tts.volume = volume;
-    speechSynthesis.speak(tts);
+    this.tts.volume = volume;
+    speechSynthesis.speak(this.tts);
   }
 
+  private testVoiceRate(voice:string, volume: number, rate: number) {
+    speechSynthesis.cancel();
+    this.tts.lang = 'en';
+    this.tts.voice = this.voices.find((value) => {
+      return value.name == voice;
+    }) || null;
+    this.tts.text = 'Voice rate '+rate;
+    this.tts.volume = volume;
+    this.tts.rate = rate;
+    this.voiceRate = rate;
+    speechSynthesis.speak(this.tts);
+
+  }
 }
