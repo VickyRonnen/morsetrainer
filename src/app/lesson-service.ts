@@ -206,7 +206,7 @@ export class LessonService {
   }
 
   async sendGroup(word: string) {
-    for (const letter of word) {
+    for (const letter of word+' ') {
       if (this.state() === 'stop') {
         break;
       }
@@ -224,8 +224,6 @@ export class LessonService {
         console.error(`Failed to send letter ${letter}:`, error);
       }
     }
-    this.text1.set(this.text1() + ' ');
-    this.sendText += ' ';
   }
 
   private generateWords(words: string[]) {

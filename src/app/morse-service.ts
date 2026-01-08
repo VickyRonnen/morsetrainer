@@ -22,8 +22,8 @@ export class MorseService {
   readSettings() {
     this.wordSpeed = Number.parseInt(localStorage.getItem('wordSpeed') || '5');
     this.Tl = 1.2 / Math.max(18, this.wordSpeed);
-    this.Ts = this.Tl;
     this.Tramp = this.Tl / 20;
+    this.Ts = this.Tl;
     if (this.wordSpeed < 18) { //Use Farnsworth timing
       this.Ts = 60 / (19 * this.wordSpeed) - (31 / 19) * this.Tl;
     }
@@ -35,7 +35,8 @@ export class MorseService {
     let duration = 0;
     for (const t of Alphabet.alphabet[c].morse + '$') {
       if (t === ' ') {
-        duration += 7 * this.Ts;
+        duration -= 3*this.Ts;
+        duration += 7*this.Ts;
         break;
       }
       switch (t) {
@@ -49,8 +50,7 @@ export class MorseService {
           break;
         case '$':
           duration -= this.Tl;
-          duration += this.Ts;
-
+          duration += 3*this.Ts;
           break;
       }
     }
@@ -69,8 +69,8 @@ export class MorseService {
     let wallClock = this.ctx.currentTime;
     for (const t of Alphabet.alphabet[character].morse + '$') {
       if (t === ' ') {
-        wallClock += 7 * this.Ts;
-        gain.gain.setTargetAtTime(this.toneVolume, wallClock, this.Tramp);
+        wallClock -= 3*this.Ts;
+        wallClock += 7*this.Ts;
         gain.gain.setTargetAtTime(0, wallClock, this.Tramp);
         break;
       }
@@ -89,8 +89,7 @@ export class MorseService {
           break;
         case '$':
           wallClock -= this.Tl;
-          wallClock += this.Ts;
-          gain.gain.setTargetAtTime(this.toneVolume, wallClock, this.Tramp);
+          wallClock += 3*this.Ts;
           gain.gain.setTargetAtTime(0, wallClock, this.Tramp);
           break;
       }
