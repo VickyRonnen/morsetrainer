@@ -5,4 +5,4 @@ sudo mkdir -p /var/www/pa5wpm
 sudo cp -r dist/morsetrainer/browser/* /var/www/pa5wpm
 sudo cp .htaccess /var/www/pa5wpm
 sudo systemctl daemon-reload
-sudo systemctl reload apache2
+sudo systemctl reload httpd
