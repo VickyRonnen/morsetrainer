@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { MorseService } from './morse-service';
+import {MorseService} from './morse-service';
 
 describe('MorseService', () => {
   let service: MorseService;

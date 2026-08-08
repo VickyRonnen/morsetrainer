@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PunctuationLesson } from './punctuation-lesson';
+import {PunctuationLesson} from './punctuation-lesson';
 
 describe('PunctuationLesson', () => {
   let component: PunctuationLesson;
@@ -10,7 +10,7 @@ describe('PunctuationLesson', () => {
     await TestBed.configureTestingModule({
       imports: [PunctuationLesson]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(PunctuationLesson);
     component = fixture.componentInstance;

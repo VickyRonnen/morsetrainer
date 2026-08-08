@@ -1,18 +1,17 @@
-import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ControlError} from '../control-error/control-error';
 import {debounceTime, distinctUntilChanged} from 'rxjs';
-import {AutoFocusDirective} from '../auto-focus.directive';
 import {MorseService} from '../morse-service';
 
 @Component({
   selector: 'app-settings',
   imports: [
     ReactiveFormsModule,
-    ControlError,
-    AutoFocusDirective
+    ControlError
   ],
   templateUrl: './settings.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './settings.css'
 })
 export class Settings implements OnInit {
@@ -210,20 +209,20 @@ export class Settings implements OnInit {
       this.tts.text = value.name + ' is selected';
       return value.name == voice;
     }) || null;
-    this.tts.text = 'Voice volume '+volume;
+    this.tts.text = 'Voice volume ' + volume;
     this.tts.rate = 1;
     this.voiceVolume = volume;
     this.tts.volume = volume;
     speechSynthesis.speak(this.tts);
   }
 
-  private testVoiceRate(voice:string, volume: number, rate: number) {
+  private testVoiceRate(voice: string, volume: number, rate: number) {
     speechSynthesis.cancel();
     this.tts.lang = 'en';
     this.tts.voice = this.voices.find((value) => {
       return value.name == voice;
     }) || null;
-    this.tts.text = 'Voice rate '+rate;
+    this.tts.text = 'Voice rate ' + rate;
     this.tts.volume = volume;
     this.tts.rate = rate;
     this.voiceRate = rate;

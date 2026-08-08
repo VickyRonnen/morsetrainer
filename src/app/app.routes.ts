@@ -15,7 +15,11 @@ export const routes: Routes = [
   {path: 'letters', component: LetterLessons, title: 'Letters'},
   {path: 'letters/:id', component: LetterLesson, title: (route) => `Letter lesson ${route.paramMap.get('id') ?? ''}`},
   {path: 'punctuations', component: PunctuationLessons, title: 'Punctuations'},
-  {path: 'punctuations/:id', component: PunctuationLesson, title: (route) => `Punctuation lesson ${route.paramMap.get('id') ?? ''}`},
+  {
+    path: 'punctuations/:id',
+    component: PunctuationLesson,
+    title: (route) => `Punctuation lesson ${route.paramMap.get('id') ?? ''}`
+  },
   {path: 'words', component: WordLesson, title: 'Words'},
   {path: 'settings', component: Settings, title: 'Settings'},
   {path: 'overview', component: Overview, title: 'Overview'},

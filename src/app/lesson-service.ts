@@ -7,6 +7,11 @@ import {Alphabet} from './alphabet';
   providedIn: 'root',
 })
 export class LessonService {
+  state = signal<'stop' | 'sending' | 'readout'>('stop');
+  text1 = signal<string>('');
+  text2 = signal<string>('');
+  text3 = signal<string>('');
+  sendText: string = '';
   private duration: number = 0;
   private groupSize: number = 0;
   private pause: number = 0;
@@ -14,14 +19,9 @@ export class LessonService {
   private voice: string | undefined | null = '';
   private voiceVolume: number = 0;
   private readonly morseService: MorseService = inject(MorseService);
-  state = signal<'stop' | 'sending' | 'readout'>('stop');
-  text1 = signal<string>('');
-  text2 = signal<string>('');
-  text3 = signal<string>('');
   private utterance!: SpeechSynthesisUtterance;
   private index: number = 0;
   private voices: SpeechSynthesisVoice[] = [];
-  sendText: string = '';
   private voiceRate: number = 0;
 
   // Prevent overlapping runs + allow cancellation of in-flight send()
@@ -49,10 +49,6 @@ export class LessonService {
     globalThis.speechSynthesis.onvoiceschanged = () => {
       loadVoices();
     };
-  }
-
-  private randomInteger(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min)) + min;
   }
 
   async start(lessonMode: LessonMode, newLetters: string[], oldLetters: string[]) {
@@ -150,7 +146,10 @@ export class LessonService {
     }
 
     // abort in-flight morse send() and stop any currently playing oscillator immediately
-    try { this.runAbort?.abort(); } catch { /* ignore */ }
+    try {
+      this.runAbort?.abort();
+    } catch { /* ignore */
+    }
     this.runAbort = undefined;
     this.morseService.stopAll();
 
@@ -266,6 +265,10 @@ export class LessonService {
         console.error(`Failed to send letter ${letter}:`, error);
       }
     }
+  }
+
+  private randomInteger(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min)) + min;
   }
 
   private generateWords(words: string[]) {

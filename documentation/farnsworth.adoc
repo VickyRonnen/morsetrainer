@@ -69,8 +69,7 @@ At 18 WPM a stem:[T_l] lasts for stem:[60 / (18 * 50)] = 0.0666667 seconds or 66
 In the word *'PARIS '* we have 11 + 5 + 7 + 3 + 5 = 31 ticks in the letters and 50 - 31 = 19 silence ticks between letters.
 By making the silence ticks longer, the effective WPM is lowered.
 
-Let *stem:[W_c]* the character speed
-Let *stem:[W_e]* the effective word speed
+Let *stem:[W_c]* the character speed Let *stem:[W_e]* the effective word speed
 
 stem:[T_l=60/(50W_c)=60 / (50*18) = 0.06667s\ (66.67ms)]
 

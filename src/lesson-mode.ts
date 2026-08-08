@@ -1,6 +1,6 @@
 export enum LessonMode {
   NewOnly,
-  NewAndOldFiftyFifty ,
-  NewAndOld ,
+  NewAndOldFiftyFifty,
+  NewAndOld,
   Words
 }

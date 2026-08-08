@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal} from '@angular/core';
 import {Word} from '../word';
 import {LessonService} from '../lesson-service';
 
@@ -6,11 +6,12 @@ import {LessonService} from '../lesson-service';
 @Component({
   selector: 'app-word-lesson',
   templateUrl: './word-lesson.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './word-lesson.css',
 })
 export class WordLesson implements OnInit, OnDestroy {
-  private readonly words: string[] = Word.words;
   protected readonly isBusy = signal<boolean>(false);
+  private readonly words: string[] = Word.words;
 
   constructor(protected readonly lessonService: LessonService) {
   }

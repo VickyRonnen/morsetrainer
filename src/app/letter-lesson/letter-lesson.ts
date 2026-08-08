@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal} from '@angular/core';
 import {LessonMode} from '../../lesson-mode';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LessonService} from '../lesson-service';
@@ -7,15 +7,16 @@ import {LessonService} from '../lesson-service';
 @Component({
   selector: 'app-letter-lesson',
   templateUrl: './letter-lesson.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './letter-lesson.css',
 })
 export class LetterLesson implements OnInit, OnDestroy {
-  private readonly letters: string = 'KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X';
   protected readonly LessonMode = LessonMode;
   protected readonly isBusy = signal<boolean>(false);
   protected newLetters: string[] = [];
-  private oldLetters: string[] = [];
   protected lesson: number = 1;
+  private readonly letters: string = 'KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X';
+  private oldLetters: string[] = [];
 
   constructor(private readonly router: Router, private readonly activatedRoute: ActivatedRoute, protected readonly lessonService: LessonService) {
   }
@@ -67,7 +68,7 @@ export class LetterLesson implements OnInit, OnDestroy {
   protected gotoLesson(lesson: number) {
     if (this.lesson < 1 || this.lesson > this.letters.length / 2)
       lesson = 1;
-    this.router.  navigate(['/letters', lesson]);
+    this.router.navigate(['/letters', lesson]);
   }
 
   protected canNext() {

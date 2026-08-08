@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Nav} from './nav/nav';
 
@@ -6,11 +6,11 @@ import {Nav} from './nav/nav';
   selector: 'app-root',
   imports: [RouterOutlet, Nav],
   templateUrl: './app.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.css'
 })
-export class App  implements OnInit{
+export class App implements OnInit {
   title = 'morsetrainer';
-  protected startupError: any;
 
   ngOnInit(): void {
     globalThis.document.body.dataset['bsTheme'] = (localStorage.getItem('darkMode') || 'true') === 'true' ? 'dark' : 'light';

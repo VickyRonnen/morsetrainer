@@ -1,7 +1,7 @@
-<main class="container py-4" appAutofocus>
+<main appAutofocus class="container py-4">
   <header class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="mb-0">Punctuation Lessons</h1>
-    <button type="button" class="btn btn-primary" (click)="gotoLesson(currentLesson)" appAutofocus>
+    <button (click)="gotoLesson(currentLesson)" appAutofocus class="btn btn-primary" type="button">
       Continue Lesson {{ currentLesson }}
     </button>
   </header>
@@ -10,18 +10,18 @@
     @for (lesson of lessons; track lesson.number) {
       <div class="col">
         <button
-          type="button"
-          class="card h-100 w-100 text-start lesson-button shadow-sm bg-body"
-          [class.active-lesson]="currentLesson === lesson.number"
-          [attr.aria-label]="lesson.ariaLabel"
           (click)="gotoLesson(lesson.number)"
+          [attr.aria-label]="lesson.ariaLabel"
+          [class.active-lesson]="currentLesson === lesson.number"
+          class="card h-100 w-100 text-start lesson-button shadow-sm bg-body"
           tabindex="0"
+          type="button"
         >
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-start">
               <h2 class="card-title h6 text-uppercase text-body-secondary mb-2">Lesson {{ lesson.number }}</h2>
               @if (currentLesson === lesson.number) {
-                <span class="badge bg-primary" aria-label="Current lesson">Current</span>
+                <span aria-label="Current lesson" class="badge bg-primary">Current</span>
               }
             </div>
             <h3 class="card-text fs-4 fw-bold mb-0 text-body">{{ lesson.label }}</h3>

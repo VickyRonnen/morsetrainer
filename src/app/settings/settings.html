@@ -3,8 +3,8 @@
         [formGroup]="settingsForm"
         autocomplete="off"
         class="row gy-3 w-100"
-        style="max-width: 720px;"
-        novalidate>
+        novalidate
+        style="max-width: 720px;">
     <header class="col-12">
       <h1 class="h3 mb-1">Settings</h1>
       <h2 class="h6">
@@ -16,17 +16,16 @@
       <div class="row align-items-center g-2">
         <label class="col-sm-4 col-form-label" for="wordSpeed">Word speed</label>
         <div class="col-sm-8">
-          <input class="form-control"
+          <input [attr.aria-describedby]="'wordSpeed-error'"
+                 [attr.aria-invalid]="settingsForm.get('wordSpeed')?.invalid ? 'true' : null"
+                 class="form-control"
                  formControlName="wordSpeed"
                  id="wordSpeed"
-                 type="number"
-                 appAutofocus
                  inputmode="numeric"
-                 min="1"
                  max="30"
-                 [attr.aria-describedby]="'wordSpeed-error'"
-                 [attr.aria-invalid]="settingsForm.get('wordSpeed')?.invalid ? 'true' : null">
-          <control-error id="wordSpeed-error" controlName="wordSpeed"></control-error>
+                 min="1"
+                 type="number">
+          <control-error controlName="wordSpeed" id="wordSpeed-error"></control-error>
         </div>
       </div>
     </div>
@@ -35,54 +34,54 @@
       <div class="row align-items-center g-2">
         <label class="col-sm-4 col-form-label" for="groupSize">Group size</label>
         <div class="col-sm-8">
-          <input class="form-control"
+          <input [attr.aria-describedby]="'groupSize-error'"
+                 [attr.aria-invalid]="settingsForm.get('groupSize')?.invalid ? 'true' : null"
+                 class="form-control"
                  formControlName="groupSize"
                  id="groupSize"
-                 type="number"
                  inputmode="numeric"
-                 min="3"
                  max="10"
-                 [attr.aria-describedby]="'groupSize-error'"
-                 [attr.aria-invalid]="settingsForm.get('groupSize')?.invalid ? 'true' : null">
+                 min="3"
+                 type="number">
         </div>
       </div>
-      <control-error id="groupSize-error" controlName="groupSize"></control-error>
+      <control-error controlName="groupSize" id="groupSize-error"></control-error>
     </div>
 
     <div class="col-12">
       <div class="row align-items-center g-2">
         <label class="col-sm-4 col-form-label" for="pause">Pause before in seconds</label>
         <div class="col-sm-8">
-          <input class="form-control"
+          <input [attr.aria-describedby]="'pause-error'"
+                 [attr.aria-invalid]="settingsForm.get('pause')?.invalid ? 'true' : null"
+                 class="form-control"
                  formControlName="pause"
                  id="pause"
-                 type="number"
                  inputmode="numeric"
-                 min="0"
                  max="10"
-                 [attr.aria-describedby]="'pause-error'"
-                 [attr.aria-invalid]="settingsForm.get('pause')?.invalid ? 'true' : null">
+                 min="0"
+                 type="number">
         </div>
       </div>
-      <control-error id="pause-error" controlName="pause"></control-error>
+      <control-error controlName="pause" id="pause-error"></control-error>
     </div>
 
     <div class="col-12">
       <div class="row align-items-center g-2">
         <label class="col-sm-4 col-form-label" for="duration">Lesson duration in seconds</label>
         <div class="col-sm-8">
-          <input class="form-control"
+          <input [attr.aria-describedby]="'duration-error'"
+                 [attr.aria-invalid]="settingsForm.get('duration')?.invalid ? 'true' : null"
+                 class="form-control"
                  formControlName="duration"
                  id="duration"
-                 type="number"
                  inputmode="numeric"
-                 min="5"
                  max="600"
-                 [attr.aria-describedby]="'duration-error'"
-                 [attr.aria-invalid]="settingsForm.get('duration')?.invalid ? 'true' : null">
+                 min="5"
+                 type="number">
         </div>
       </div>
-      <control-error id="duration-error" controlName="duration"></control-error>
+      <control-error controlName="duration" id="duration-error"></control-error>
     </div>
 
     <div class="col-12">
@@ -107,18 +106,18 @@
       <div class="row align-items-center g-2">
         <label class="col-sm-4 col-form-label" for="toneVolume">Tone volume</label>
         <div class="col-sm-8">
-          <input class="form-range"
+          <input [attr.aria-describedby]="'toneVolume-error'"
+                 [attr.aria-invalid]="settingsForm.get('toneVolume')?.invalid ? 'true' : null"
+                 class="form-range"
                  formControlName="toneVolume"
                  id="toneVolume"
                  max="1"
                  min="0"
                  step="0.05"
-                 type="range"
-                 [attr.aria-describedby]="'toneVolume-error'"
-                 [attr.aria-invalid]="settingsForm.get('toneVolume')?.invalid ? 'true' : null">
+                 type="range">
         </div>
       </div>
-      <control-error id="toneVolume-error" controlName="toneVolume"></control-error>
+      <control-error controlName="toneVolume" id="toneVolume-error"></control-error>
     </div>
 
     <div class="col-12">
@@ -127,69 +126,69 @@
           <label class="form-check-label" for="revealBefore">Reveal before sending</label>
         </div>
         <div class="col-sm-8">
-          <input class="form-check-input"
+          <input [attr.aria-describedby]="'revealBefore-error'"
+                 [attr.aria-invalid]="settingsForm.get('revealBefore')?.invalid ? 'true' : null"
+                 class="form-check-input"
                  formControlName="revealBefore"
                  id="revealBefore"
-                 type="checkbox"
-                 [attr.aria-describedby]="'revealBefore-error'"
-                 [attr.aria-invalid]="settingsForm.get('revealBefore')?.invalid ? 'true' : null">
+                 type="checkbox">
         </div>
       </div>
-      <control-error id="revealBefore-error" controlName="revealBefore"></control-error>
+      <control-error controlName="revealBefore" id="revealBefore-error"></control-error>
     </div>
 
     <div class="col-12">
       <div class="row align-items-center g-2">
         <label class="col-sm-4 col-form-label" for="voice">Voice</label>
         <div class="col-sm-8">
-          <select class="form-select"
+          <select [attr.aria-describedby]="'voice-error'"
+                  [attr.aria-invalid]="settingsForm.get('voice')?.invalid ? 'true' : null"
+                  class="form-select"
                   formControlName="voice"
-                  id="voice"
-                  [attr.aria-describedby]="'voice-error'"
-                  [attr.aria-invalid]="settingsForm.get('voice')?.invalid ? 'true' : null">
+                  id="voice">
             @for (voice of voices; track voice) {
               <option value="{{voice.name}}">{{ voice.name }}</option>
             }
           </select>
         </div>
       </div>
-      <control-error id="voice-error" controlName="voice"></control-error>
+      <control-error controlName="voice" id="voice-error"></control-error>
     </div>
 
     <div class="col-12">
       <div class="row align-items-center g-2">
         <label class="col-sm-4 col-form-label" for="voiceVolume">Voice volume</label>
         <div class="col-sm-8">
-          <input class="form-range"
+          <input [attr.aria-describedby]="'voiceVolume-error'"
+                 [attr.aria-invalid]="settingsForm.get('voiceVolume')?.invalid ? 'true' : null"
+                 class="form-range"
                  formControlName="voiceVolume"
                  id="voiceVolume"
                  max="1"
                  min="0"
                  step="0.05"
-                 type="range"
-                 [attr.aria-describedby]="'voiceVolume-error'"
-                 [attr.aria-invalid]="settingsForm.get('voiceVolume')?.invalid ? 'true' : null">
+                 type="range">
         </div>
       </div>
-      <control-error id="voiceVolume-error" controlName="voiceVolume"></control-error>
+      <control-error controlName="voiceVolume" id="voiceVolume-error"></control-error>
     </div>
 
     <div class="col-12">
       <div class="row align-items-center g-2">
         <label class="col-sm-4 col-form-label" for="voiceRate">Voice rate</label>
         <div class="col-sm-8">
-          <input class="form-range"
+          <input [attr.aria-describedby]="'voiceRate-error'"
+                 [attr.aria-invalid]="settingsForm.get('voiceRate')?.invalid ? 'true' : null"
+                 class="form-range"
                  formControlName="voiceRate"
                  id="voiceRate"
                  max="1.5"
                  min="0.5"
                  step="0.05"
-                 type="range"
-                 [attr.aria-describedby]="'voiceRate-error'"
-                 [attr.aria-invalid]="settingsForm.get('voiceRate')?.invalid ? 'true' : null">
+                 type="range">
         </div>
       </div>
-      <control-error id="voiceRate-error" controlName="voiceRate"></control-error>
+      <control-error controlName="voiceRate" id="voiceRate-error"></control-error>
     </div>
 
     <div class="col-12">
@@ -198,15 +197,15 @@
           <label class="form-check-label" for="darkMode">Dark mode</label>
         </div>
         <div class="col-sm-8">
-          <input class="form-check-input"
+          <input [attr.aria-describedby]="'darkMode-error'"
+                 [attr.aria-invalid]="settingsForm.get('darkMode')?.invalid ? 'true' : null"
+                 class="form-check-input"
                  formControlName="darkMode"
                  id="darkMode"
-                 type="checkbox"
-                 [attr.aria-describedby]="'darkMode-error'"
-                 [attr.aria-invalid]="settingsForm.get('darkMode')?.invalid ? 'true' : null">
+                 type="checkbox">
         </div>
       </div>
-      <control-error id="darkMode-error" controlName="darkMode"></control-error>
+      <control-error controlName="darkMode" id="darkMode-error"></control-error>
     </div>
 
     <div class="col-12 d-flex gap-2 mt-2 justify-content-start">

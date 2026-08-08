@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal} from '@angular/core';
 import {LessonMode} from '../../lesson-mode';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LessonService} from '../lesson-service';
@@ -7,15 +7,16 @@ import {LessonService} from '../lesson-service';
 @Component({
   selector: 'app-punctuation-lesson',
   templateUrl: './punctuation-lesson.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './punctuation-lesson.css',
 })
 export class PunctuationLesson implements OnInit, OnDestroy {
   protected readonly LessonMode = LessonMode;
-  private readonly punctuations: string = '.,!?&@\'"():;=/-+';
   protected readonly isBusy = signal<boolean>(false);
   protected newPunctuations: string[] = [];
-  private oldPunctuations: string[] = [];
   protected lesson: number = 1;
+  private readonly punctuations: string = '.,!?&@\'"():;=/-+';
+  private oldPunctuations: string[] = [];
 
   constructor(private readonly router: Router, private readonly activatedRoute: ActivatedRoute, protected readonly lessonService: LessonService) {
   }

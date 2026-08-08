@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {v4 as uuidv4} from 'uuid';
 
@@ -8,12 +8,13 @@ import {v4 as uuidv4} from 'uuid';
     RouterLink
   ],
   templateUrl: './home.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.css'
 })
-export class Home implements OnInit{
-  private readonly cdr = inject(ChangeDetectorRef);
+export class Home implements OnInit {
   protected startupError: string | undefined;
   protected nvoices: number = 0;
+  private readonly cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
     this.checkSpeechSynthesisSupport().then(supported => {

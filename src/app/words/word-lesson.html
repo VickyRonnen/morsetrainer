@@ -2,32 +2,32 @@
   <h1 class="h5">Word lesson</h1>
   <div class="d-flex flex-column flex-sm-row flex-sm-wrap gap-2 align-items-stretch align-items-sm-center">
     <button
-      type="button"
-      class="btn btn-primary"
       (click)=start()
-      [disabled]="lessonService.state()!=='stop'"
       [attr.aria-disabled]="lessonService.state()!=='stop'"
+      [disabled]="lessonService.state()!=='stop'"
+      class="btn btn-primary"
+      type="button"
     >
       Start
     </button>
 
     <button
+      (click)=stop();
+      [attr.aria-disabled]="lessonService.state()==='stop'"
+      [disabled]="lessonService.state()==='stop'"
+      class="btn btn-danger"
       id="stop"
       type="button"
-      class="btn btn-danger"
-      (click)=stop();
-      [disabled]="lessonService.state()==='stop'"
-      [attr.aria-disabled]="lessonService.state()==='stop'"
     >
       Stop
     </button>
 
     <button
-      type="button"
-      class="btn btn-success"
       (click)=readOut()
-      [disabled]=!lessonService.canReadOut()
       [attr.aria-disabled]=!lessonService.canReadOut()
+      [disabled]=!lessonService.canReadOut()
+      class="btn btn-success"
+      type="button"
     >
       Read out
     </button>
@@ -37,10 +37,11 @@
     <div class="col-12">
       <h2 class="h5">Send text</h2>
       <div
-        class="font-monospace w-100"
         aria-hidden="true"
+        class="font-monospace w-100"
       >
-        {{ lessonService.text1() }} <span class="bg-danger"> {{ lessonService.text2() }}</span> {{ lessonService.text3() }}
+        {{ lessonService.text1() }} <span
+        class="bg-danger"> {{ lessonService.text2() }}</span> {{ lessonService.text3() }}
       </div>
     </div>
   </div>

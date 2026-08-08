@@ -96,8 +96,14 @@ export class MorseService {
     const cleanup = () => {
       this.activeOscillators.delete(osc);
       this.activeGains.delete(gain);
-      try { osc.disconnect(); } catch { /* ignore */ }
-      try { gain.disconnect(); } catch { /* ignore */ }
+      try {
+        osc.disconnect();
+      } catch { /* ignore */
+      }
+      try {
+        gain.disconnect();
+      } catch { /* ignore */
+      }
     };
 
     osc.type = 'sine';
@@ -146,7 +152,10 @@ export class MorseService {
           } catch {
             // ignore
           }
-          try { osc.stop(now); } catch { /* ignore */ }
+          try {
+            osc.stop(now);
+          } catch { /* ignore */
+          }
         } finally {
           cleanup();
           reject(new DOMException('Aborted', 'AbortError'));

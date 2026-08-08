@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core';
 import {Alphabet} from '../alphabet';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {map, shareReplay} from 'rxjs';
@@ -18,13 +18,14 @@ type LessonItem = {
     AsyncPipe
   ],
   templateUrl: './overview.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './overview.css',
 })
 export class Overview implements OnInit {
-  private readonly letters: string = 'KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X';
-  private readonly punctuations: string = '.,!?&@\'"():;=/-+';
   protected letterItems: LessonItem[] = [];
   protected punctuationItems: LessonItem[] = [];
+  private readonly letters: string = 'KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X';
+  private readonly punctuations: string = '.,!?&@\'"():;=/-+';
   private readonly breakpointObserver = inject(BreakpointObserver);
   isLargeScreen$ = this.breakpointObserver.observe('(min-width: 768px)')
     .pipe(map(result => result.matches), shareReplay());
@@ -32,6 +33,21 @@ export class Overview implements OnInit {
   ngOnInit(): void {
     this.letterItems = this.generateLessonItems(this.letters);
     this.punctuationItems = this.generateLessonItems(this.punctuations);
+  }
+
+  textToMorse(text: string): string {
+    return text.toUpperCase()
+      .replaceAll('.', 'dit ')
+      .replaceAll('-', 'dah ')
+      .trim();
+  }
+
+  chunkedItems(items: LessonItem[]) {
+    const pairs: LessonItem[][] = [];
+    for (let i = 0; i < items.length; i += 2) {
+      pairs.push([items[i], items[i + 1]]);
+    }
+    return pairs;
   }
 
   private generateLessonItems(chars: string): LessonItem[] {
@@ -50,20 +66,5 @@ export class Overview implements OnInit {
         morseAriaLabel: this.textToMorse(data.morse)
       };
     });
-  }
-
-  textToMorse(text: string): string {
-    return text.toUpperCase()
-      .replaceAll('.', 'dit ')
-      .replaceAll('-', 'dah ')
-      .trim();
-  }
-
-  chunkedItems(items: LessonItem[]) {
-    const pairs: LessonItem[][] = [];
-    for (let i = 0; i < items.length; i += 2) {
-      pairs.push([items[i], items[i + 1]]);
-    }
-    return pairs;
   }
 }

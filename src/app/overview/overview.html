@@ -15,21 +15,21 @@
     <div class="accordion-item">
       <h2 class="accordion-header" id="letters-heading">
         <button
-          class="accordion-button"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#letters-panel"
+          aria-controls="letters-panel"
           aria-expanded="true"
-          aria-controls="letters-panel">
+          class="accordion-button"
+          data-bs-target="#letters-panel"
+          data-bs-toggle="collapse"
+          type="button">
           Letter lessons
         </button>
       </h2>
 
       <div
-        id="letters-panel"
-        class="accordion-collapse collapse show"
         aria-labelledby="letters-heading"
-        data-bs-parent="#lessons-accordion">
+        class="accordion-collapse collapse show"
+        data-bs-parent="#lessons-accordion"
+        id="letters-panel">
         <div class="accordion-body">
           @if (isLargeScreen$ | async) {
             <table class="table table-striped" id="letter-lessons-table2">
@@ -51,9 +51,9 @@
                   <tr>
                     <th scope="row">{{ r[0].lesson }}</th>
                     <td aria-label="{{r[0].label}}">{{ r[0].char }}</td>
-                    <td class="font-monospace" aria-label="{{r[0].morseAriaLabel}}">{{ r[0].morse }}</td>
+                    <td aria-label="{{r[0].morseAriaLabel}}" class="font-monospace">{{ r[0].morse }}</td>
                     <td aria-label="{{r[1].label}}">{{ r[1].char }}</td>
-                    <td class="font-monospace" aria-label="{{r[1].morseAriaLabel}}">{{ r[1].morse }}</td>
+                    <td aria-label="{{r[1].morseAriaLabel}}" class="font-monospace">{{ r[1].morse }}</td>
                   </tr>
                 }
               </tbody>
@@ -76,7 +76,7 @@
                   <tr>
                     <th scope="row">{{ r.lesson }}</th>
                     <td aria-label="{{r.label}}">{{ r.char }}</td>
-                    <td class="font-monospace" aria-label="{{r.morseAriaLabel}}">{{ r.morse }}</td>
+                    <td aria-label="{{r.morseAriaLabel}}" class="font-monospace">{{ r.morse }}</td>
                   </tr>
                 }
               </tbody>
@@ -89,21 +89,21 @@
     <div class="accordion-item">
       <h2 class="accordion-header" id="punctuation-heading">
         <button
-          class="accordion-button collapsed"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#punctuation-panel"
+          aria-controls="punctuation-panel"
           aria-expanded="false"
-          aria-controls="punctuation-panel">
+          class="accordion-button collapsed"
+          data-bs-target="#punctuation-panel"
+          data-bs-toggle="collapse"
+          type="button">
           Punctuation lessons
         </button>
       </h2>
 
       <div
-        id="punctuation-panel"
-        class="accordion-collapse collapse"
         aria-labelledby="punctuation-heading"
-        data-bs-parent="#lessons-accordion">
+        class="accordion-collapse collapse"
+        data-bs-parent="#lessons-accordion"
+        id="punctuation-panel">
         <div class="accordion-body">
           @if (isLargeScreen$ | async) {
             <table class="table table-striped" id="punctuation-lessons-table2">
@@ -125,9 +125,9 @@
                   <tr>
                     <th scope="row">{{ r[0].lesson }}</th>
                     <td aria-label="{{r[0].label}}">{{ r[0].char }}</td>
-                    <td class="font-monospace" aria-label="{{r[0].morseAriaLabel}}">{{ r[0].morse }}</td>
+                    <td aria-label="{{r[0].morseAriaLabel}}" class="font-monospace">{{ r[0].morse }}</td>
                     <td aria-label="{{r[1].label}}">{{ r[1].char }}</td>
-                    <td class="font-monospace" aria-label="{{r[1].morseAriaLabel}}">{{ r[1].morse }}</td>
+                    <td aria-label="{{r[1].morseAriaLabel}}" class="font-monospace">{{ r[1].morse }}</td>
                   </tr>
                 }
               </tbody>
@@ -150,7 +150,7 @@
                   <tr>
                     <th scope="row">{{ r.lesson }}</th>
                     <td aria-label="{{r.label}}">{{ r.char }}</td>
-                    <td class="font-monospace" aria-label="{{r.morseAriaLabel}}">{{ r.morse }}</td>
+                    <td aria-label="{{r.morseAriaLabel}}" class="font-monospace">{{ r.morse }}</td>
                   </tr>
                 }
               </tbody>

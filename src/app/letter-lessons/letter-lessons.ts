@@ -1,4 +1,4 @@
-import {Component, HostListener, inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostListener, inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Lesson} from '../lesson';
 import {Letter} from '../letter';
@@ -11,14 +11,14 @@ import {AutoFocusDirective} from '../auto-focus.directive';
     AutoFocusDirective
   ],
   templateUrl: './letter-lessons.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './letter-lessons.css'
 })
 export class LetterLessons implements OnInit {
-  private readonly router = inject(Router);
-
   currentLesson: number = Number.parseInt(localStorage.getItem('letter-lesson') || '1');
   protected lessons: Lesson[] = Letter.lessons;
-  private index: number=-1;
+  private readonly router = inject(Router);
+  private index: number = -1;
 
 
   ngOnInit() {
@@ -38,8 +38,8 @@ export class LetterLessons implements OnInit {
     const target = event.target as HTMLButtonElement;
 
     const buttons: HTMLButtonElement[] = Array.from(document.querySelectorAll('.lesson-button'));
-    if (this.index===-1)
-      this.index = buttons.findIndex(e=>e.classList.contains('active-lesson'))
+    if (this.index === -1)
+      this.index = buttons.findIndex(e => e.classList.contains('active-lesson'))
     const columns = this.getColumns();
     let nextIndex = -1;
 
