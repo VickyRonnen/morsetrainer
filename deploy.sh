@@ -13,6 +13,12 @@ ssh root@pa5wpm.nl rm -rf /var/www/$DOMAIN
 ssh root@pa5wpm.nl mkdir -p /var/www/$DOMAIN
 scp -r dist/morsetrainer/browser/* root@pa5wpm.nl:/var/www/$DOMAIN
 scp strato/100-pa5wpm.nl.conf root@pa5wpm.nl:/etc/apache2/sites-available
+scp strato/199-pa5wpm.nl.conf root@pa5wpm.nl:/etc/apache2/sites-available
+for module in proxy_http proxy_html proxy proxy_http2
+do
+  ssh root@denkzelf.nl a2query -m $module
+done
 ssh root@pa5wpm.nl a2ensite 100-pa5wpm.nl.conf
+ssh root@pa5wpm.nl a2ensite 199-pa5wpm.nl.conf
 ssh root@pa5wpm.nl 'apachectl -t' && echo OK || echo ERROR
-ssh root@pa5wpm.nl systemctl reload apache2
+ssh root@pa5wpm.nl systemctl restart apache2
